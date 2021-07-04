@@ -6,48 +6,52 @@ function computerPlay() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    let loss = 0;
-    let win = 1;
-    let draw = 2;
+    let playerTemp = 0;
+    let computerTemp = 0;
 
     switch (true) {
-        case playerSelection.toLowerCase() == "rock" && computerSelection == "scissors":
-        case playerSelection.toLowerCase() == "paper" && computerSelection == "rock":
-        case playerSelection.toLowerCase() == "scissors" && computerSelection == "paper":
-            return win;
-        case playerSelection.toLowerCase() == "rock" && computerSelection == "paper":
-        case playerSelection.toLowerCase() == "paper" && computerSelection == "scissors":
-        case playerSelection.toLowerCase() == "scissors" && computerSelection == "rock":
-            return loss;
-        default:
-            return draw;
+        case (playerSelection.toLowerCase() == "rock") && (computerSelection == "scissors"):
+        case (playerSelection.toLowerCase() == "paper") && (computerSelection == "rock"):
+        case (playerSelection.toLowerCase() == "scissors") && (computerSelection == "paper"):
+            playerTemp = playerScore.textContent;
+            playerScore.textContent = +playerTemp + +1;
+            break;
+        case (playerSelection.toLowerCase() == "rock") && (computerSelection == "paper"):
+        case (playerSelection.toLowerCase() == "paper") && (computerSelection == "scissors"):
+        case (playerSelection.toLowerCase() == "scissors") && (computerSelection == "rock"):
+            computerTemp = computerScore.textContent;
+            computerScore.textContent = +computerTemp + +1;
+            break;
+    }
+
+    if (playerScore.textContent == 5) {
+        let win = document.createElement('p');
+        win.textContent = "Player wins";
+        scoreboard.appendChild(win);
+    } else if (computerScore.textContent == 5){
+        let loss = document.createElement('p');
+        loss.textContent = "Computer wins";
+        scoreboard.appendChild(loss);
     }
 }
 
-function game() {
-    let timesToLoop = parseInt(prompt("Enter how many rounds you want to play."));
-    let playerPoints = 0;
-    let computerPoints = 0;
+let rock = document.querySelector('#rock');
+rock.addEventListener('click', () => playRound("rock", computerPlay()))
 
-    for (let i = 1; i <= timesToLoop; i++) {
-        let playerSelection = prompt("Please enter rock, paper, or scissors.");
-        let computerSelection = computerPlay();
-        switch (playRound(playerSelection, computerSelection)) {
-            case 0:
-                computerPoints += 1;
-                break;
-            case 1:
-                playerPoints += 1;
-                break;
-            case 2:
-                break;
-        }
-    }
-    if (playerPoints > computerPoints) {
-        console.log("You won the game!");
-    } else if (computerPoints > playerPoints) {
-        console.log("You lost the game.");
-    } else {
-        console.log("You two tied.");
-    }
-}
+let paper = document.querySelector('#paper');
+paper.addEventListener('click', () => playRound("paper", computerPlay()))
+
+let scissors = document.querySelector('#scissors');
+scissors.addEventListener('click', () => playRound("scissors", computerPlay()))
+
+const scoreboard = document.querySelector('#scoreBoard');
+
+let playerScore = document.createElement("h2");
+let computerScore = document.createElement("h2");
+
+playerScore.textContent = "0";
+computerScore.textContent = "0";
+
+
+scoreboard.appendChild(playerScore);
+scoreboard.appendChild(computerScore);
